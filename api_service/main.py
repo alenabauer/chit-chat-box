@@ -5,6 +5,8 @@ import os
 from dotenv import load_dotenv
 load_dotenv()
 
+# TODO: refactor and use app instead of router for each microservice
+
 class Question(BaseModel):
     question: str
 
@@ -18,7 +20,7 @@ def ask(question: Question):
 
     # make an HTTP request the answer-matching service to retrieve the best matching answer
     response = httpx.post(f"{api_url}/answer_matching_service/find_answer", json={"question": user_question})
-    matching_answer = response.json()
+    matching_answer = response.json()["answer"]
 
     # create a JSON response with the best matching answer
     response = {"answer": matching_answer}

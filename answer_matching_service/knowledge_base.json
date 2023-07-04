@@ -80,5 +80,5 @@
     "What is the role of a database administrator (DBA)?": "A database administrator (DBA) is responsible for designing, implementing, and managing a database system, ensuring data integrity, security, and optimal performance.",
     "What is the difference between a shell script and a programming language?": "A shell script is a script written for the shell or command-line interface, while a programming language is a more general-purpose language used for building software applications.",
     "What is the role of a data warehouse?": "A data warehouse is a centralized repository that stores large amounts of structured and unstructured data, optimized for reporting, analysis, and decision-making.",
-    "What is the difference between a cross-platform and a native application?": "A cross-platform application can run on multiple operating systems, while a native application is designed to run specifically on a particular operating system.",
+    "What is the difference between a cross-platform and a native application?": "A cross-platform application can run on multiple operating systems, while a native application is designed to run specifically on a particular operating system."
 }
