@@ -1,0 +1,43 @@
+version: '3.7'
+
+services:
+  answer_matching_service:
+    build: ./answer_matching_service
+    command: uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
+    volumes:
+      - ./answer_matching_service/:/app/
+    ports:
+      - 8001:8000
+
+  api_service:
+    build: ./api_service
+    command: uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
+    volumes:
+      - ./api_service/:/app/
+    ports:
+      - 8002:8000
+    environment:
+      - ANSWER_MATCHING_SERVICE_URL=http://answer_matching_service:8000/api/v1/answers/
+      - CONVERSATION_HISTORY_SERVICE_URL=http://conversation_history_service:8000/api/v1/conversations/
+
+  conversation_history_service:
+    build: ./conversation_history_service
+    command: uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
+    volumes:
+      - ./conversation_history_service/:/app/
+    ports:
+      - 8003:8000
+    environment:
+      - DATABASE_URI=postgresql://conversation_db_username:conversation_db_password@conversation_db/conversation_db_dev
+
+  conversation_db:
+    image: postgres:12.1-alpine
+    volumes:
+      - postgres_data_conversation:/var/lib/postgresql/data/
+    environment:
+      - POSTGRES_USER=conversation_db_username
+      - POSTGRES_PASSWORD=conversation_db_password
+      - POSTGRES_DB=conversation_db_dev
+
+volumes:
+  postgres_data_conversation:

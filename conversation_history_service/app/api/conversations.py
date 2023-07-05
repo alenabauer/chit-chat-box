@@ -1,16 +1,16 @@
 from fastapi import APIRouter
-from api.models import Conversation
+from app.api.models import Conversation
+from app.api import db_manager
 
 conversations = APIRouter()
 
 @conversations.get("/")
-def get_all_conversations():
+async def index():
     print("Retrieving all conversations...")
-    # TODO: retrieve all conversations from the database
+    return await db_manager.get_all_conversations()
 
-@conversations.post("/new")
-def save_conversation(conversation: Conversation):
+@conversations.post("/", status_code=201)
+async def add_conversation(conversation: Conversation):
     print("Saving conversation to the database...")
-    print(conversation)
-    # TODO: save conversation to the database
+    await db_manager.add_conversation(conversation)
     return "Conversation saved successfully!"

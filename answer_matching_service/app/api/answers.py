@@ -1,16 +1,16 @@
 from fastapi import APIRouter
-from api.models import Question
+from app.api.models import Question
 import json
 
 # Open the JSON file
-with open("resources/knowledge_base.json") as file:
+with open("app/resources/knowledge_base.json") as file:
     # Load the JSON data and extract all answers
     kb_data = json.load(file)
     kb_answers = list(kb_data.values())
 
 answers = APIRouter()
 
-@answers.post("/find_best_match")
+@answers.post("/", status_code=201)
 def find_best_matching_answer(question: Question):
     # retrieve the question from the request payload
     user_question = question.question

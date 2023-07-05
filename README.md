@@ -6,41 +6,46 @@ This is a conversational AI system built using Python 3.9+ and FastAPI. The syst
 
 - Python 3.9+
 - FastAPI
-- Docker (optional, for running with Docker Compose)
+- Docker
 
 ## Installation
 
-1. Clone the repository:
+Clone the repository:
 
 ```bash
 git clone https://github.com/alenabauer/chit-chat-box.git
 cd chit-chat-box
 ```
 
-2. Create a virtual environment and install the dependencies for each of the three microservices:
-
-```bash
-python3 -m venv venv
-source venv/bin/activate
-pip install -r requirements.txt
-```
-
 ## Usage
 
-1. Run each of the microservices on a different port, e.g.:
+1. Run the microservices with Docker Compose:
 ```bash
-uvicorn main:app --reload --port 8001
+docker-compose up
 ```
 
-2. Send a request to the API service:
+2. API documentation is now available at
+- http://localhost:8001/docs for the Answer Matching Service
+- http://localhost:8002/docs for the API Service
+- http://localhost:8003/docs for the Conversation History Service
+
+3. Send a request to the API service:
+
+- via curl:
 ```bash
-curl -X POST -H "Content-Type: application/json" -d '{"question": "What is VR"}' http://localhost:8001/questions/new # if the API service is running on port 8001
+curl -X POST -H "Content-Type: application/json" -d '{"question": "What is a server?"}' http://localhost:8002/api/v1/questions/new
 ```
+- or via the Swagger UI at http://localhost:8002/docs
+
 The API Service will return a JSON response containing the best matching answer from the knowledge base.
 
-## Docker Compose
+4. All conversations are stored in the conversation history database. To view the conversation history, send a request to the Conversation History Service:
 
-TODO
+- via curl:
+```bash
+curl -X GET http://localhost:8003/api/v1/conversations/
+```
+- or via the Swagger UI at http://localhost:8003/docs
 
 ## Credits
 

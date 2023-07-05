@@ -1,18 +1,25 @@
 from fastapi import APIRouter
-from api.models import Question
+from app.api.models import Question
 from datetime import datetime
 import httpx
+import os
 
 questions = APIRouter()
 
-@questions.post("/new")
+print('environ')
+print(os.environ)
+
+answer_matching_host_url = os.environ.get('ANSWER_MATCHING_SERVICE_URL')
+conversation_history_host_url = os.environ.get('CONVERSATION_HISTORY_SERVICE_URL')
+
+@questions.post("/new", status_code=201)
 def ask(question: Question):
     # retrieve the question from the request payload
     user_question = question.question
 
     # make an HTTP request the answer-matching service to retrieve the best matching answer
-    # TODO: replace hardcoded URL with environment variable
-    response = httpx.post("http://localhost:8000/api/v1/answers/find_best_match", json={"question": user_question})
+    print("Sending a request to the answer-matching service...")
+    response = httpx.post(answer_matching_host_url, json={"question": user_question})
     matching_answer = response.json()["answer"]
 
     # Get the current time
@@ -23,7 +30,10 @@ def ask(question: Question):
         "answer": matching_answer,
         "timestamp": current_time
     }
-    response = httpx.post("http://localhost:8002/api/v1/conversations/new", json=conversation)
+
+    # make an HTTP request to the conversation-history service to save the conversation
+    print("Sending a request to the conversation-history service...")
+    response = httpx.post(conversation_history_host_url, json=conversation)
 
     # create a JSON response with the best matching answer
     response = {"answer": matching_answer}
