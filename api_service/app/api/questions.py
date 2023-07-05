@@ -1,5 +1,6 @@
 from fastapi import APIRouter
 from api.models import Question
+from datetime import datetime
 import httpx
 
 questions = APIRouter()
@@ -13,6 +14,16 @@ def ask(question: Question):
     # TODO: replace hardcoded URL with environment variable
     response = httpx.post("http://localhost:8000/api/v1/answers/find_best_match", json={"question": user_question})
     matching_answer = response.json()["answer"]
+
+    # Get the current time
+    current_time = datetime.now().isoformat()
+
+    conversation = {
+        "question": user_question,
+        "answer": matching_answer,
+        "timestamp": current_time
+    }
+    response = httpx.post("http://localhost:8002/api/v1/conversations/new", json=conversation)
 
     # create a JSON response with the best matching answer
     response = {"answer": matching_answer}

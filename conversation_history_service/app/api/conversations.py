@@ -10,7 +10,7 @@ def get_all_conversations():
 
 @conversations.post("/new")
 def save_conversation(conversation: Conversation):
-    # retrieve the conversation from the request payload
-    new_conversation = conversation.conversation
     print("Saving conversation to the database...")
+    print(conversation)
     # TODO: save conversation to the database
+    return "Conversation saved successfully!"
