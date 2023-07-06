@@ -2,11 +2,15 @@ from fastapi import APIRouter
 from app.api.models import Question
 import json
 
-# Open the JSON file
-with open("app/resources/knowledge_base.json") as file:
-    # Load the JSON data and extract all answers
-    kb_data = json.load(file)
-    kb_answers = list(kb_data.values())
+def load_knowledge_base():
+    # Open the JSON file and load the knowledge base data
+    with open("app/resources/knowledge_base.json") as file:
+        kb_data = json.load(file)
+        kb_answers = list(kb_data.values())
+    return kb_answers
+
+kb_answers = load_knowledge_base()
+# TODO: look into dependency injection: https://www.fastapitutorial.com/blog/dependency-injection-fastapi/
 
 answers = APIRouter()
 

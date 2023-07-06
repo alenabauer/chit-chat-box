@@ -6,9 +6,7 @@ import os
 
 questions = APIRouter()
 
-print('environ')
-print(os.environ)
-
+# TODO: add error handling for when the environment variables are not set
 answer_matching_host_url = os.environ.get('ANSWER_MATCHING_SERVICE_URL')
 conversation_history_host_url = os.environ.get('CONVERSATION_HISTORY_SERVICE_URL')
 
@@ -19,6 +17,7 @@ def ask(question: Question):
 
     # make an HTTP request the answer-matching service to retrieve the best matching answer
     print("Sending a request to the answer-matching service...")
+    # TODO: handle exceptions
     response = httpx.post(answer_matching_host_url, json={"question": user_question})
     matching_answer = response.json()["answer"]
 
@@ -33,9 +32,12 @@ def ask(question: Question):
 
     # make an HTTP request to the conversation-history service to save the conversation
     print("Sending a request to the conversation-history service...")
+    # TODO: handle exceptions
     response = httpx.post(conversation_history_host_url, json=conversation)
 
     # create a JSON response with the best matching answer
     response = {"answer": matching_answer}
 
     return response
+
+# TODO: look into the logging module
