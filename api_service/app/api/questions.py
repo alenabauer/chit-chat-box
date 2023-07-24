@@ -10,7 +10,6 @@ questions = APIRouter()
 answer_matching_host_url = os.environ.get('ANSWER_MATCHING_SERVICE_URL')
 conversation_history_host_url = os.environ.get('CONVERSATION_HISTORY_SERVICE_URL')
 
-# remove unnecessary comments
 # FastAPI background tasks?
 # message broker?
 # kafka?
@@ -18,7 +17,6 @@ conversation_history_host_url = os.environ.get('CONVERSATION_HISTORY_SERVICE_URL
 
 @questions.post("/new", status_code=201)
 def ask(question: Question):
-    # retrieve the question from the request payload
     user_question = question.question
 
     # make an HTTP request the answer-matching service to retrieve the best matching answer
@@ -27,7 +25,6 @@ def ask(question: Question):
     response = httpx.post(answer_matching_host_url, json={"question": user_question})
     matching_answer = response.json()["answer"]
 
-    # Get the current time
     current_time = datetime.now().isoformat()
 
     conversation = {
@@ -41,7 +38,6 @@ def ask(question: Question):
     # TODO: handle exceptions
     response = httpx.post(conversation_history_host_url, json=conversation)
 
-    # create a JSON response with the best matching answer
     response = {"answer": matching_answer}
 
     return response
