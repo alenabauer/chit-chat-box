@@ -14,6 +14,9 @@ kb_answers = load_knowledge_base()
 
 answers = APIRouter()
 
+# TODO: use typing consistently
+# look into different storage types
+
 @answers.post("/", status_code=201)
 def find_best_matching_answer(question: Question):
     # retrieve the question from the request payload

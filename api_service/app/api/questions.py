@@ -10,6 +10,12 @@ questions = APIRouter()
 answer_matching_host_url = os.environ.get('ANSWER_MATCHING_SERVICE_URL')
 conversation_history_host_url = os.environ.get('CONVERSATION_HISTORY_SERVICE_URL')
 
+# remove unnecessary comments
+# FastAPI background tasks?
+# message broker?
+# kafka?
+# add unit tests ?
+
 @questions.post("/new", status_code=201)
 def ask(question: Question):
     # retrieve the question from the request payload

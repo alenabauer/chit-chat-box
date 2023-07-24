@@ -14,7 +14,7 @@ conversations = Table(
     'conversations',
     metadata,
     Column('id', Integer, primary_key=True),
-    Column('question', String(250)),
+    Column('question', String(250), index=True),
     Column('answer', String(250)),
     Column('timestamp', String(250)),
 )
